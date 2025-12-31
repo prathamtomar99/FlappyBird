@@ -1,6 +1,11 @@
 #include "Game.h"
+#include <fstream>
+#include <iostream>
 
 Game::Game(sf::RenderWindow& window):win(window),is_enter_pressed(false),run_game(true), pipe_counter(70),pipe_spawn_time(70){
+
+    if(fileExists("best_weights.txt"))
+        brain.load("best_weights.txt");
 
     win.setFramerateLimit(80);
     bg_texture.loadFromFile("assets/bg.png");
@@ -43,9 +48,22 @@ void Game::startGameLoop(bool& isAI){
                 is_enter_pressed = true;
                 bird.setShouldFly(true);
             }
-            if (run_game && is_enter_pressed) {
-                // int action = aiOutput(state);
-                int action = 0;
+            if (run_game && is_enter_pressed && isStateValid()) {
+                // int action = 0;
+
+                // state.printState();
+                state.normalizePoints();
+                std::vector<float> input = {
+                    state.next_pipe_distance_x,
+                    state.next_pipe_distance_upy,
+                    state.next_pipe_distance_downy,
+                    state.bird_y,
+                    state.bird_velocity
+                };
+                
+                float output = brain.forward(input);
+                int action = (output > 0.5f);
+                // std::cout<<output<<" ";
                 if (action == 1) {
                     bird.flapBird(dt);
                 }
@@ -89,10 +107,8 @@ void Game::startGameLoop(bool& isAI){
             state.next_pipe_distance_downy = b;
         }
         
-        state.normalizePoints();
         // state.printState();   
     }
-    
 }
 
 void Game::draw(){
@@ -145,6 +161,12 @@ void Game::doProcessing(sf::Time &dt){
     bird.update(dt);
     state.bird_velocity = bird.getVelocity();
     state.bird_y = bird.getY();
+    fitness += dt.asSeconds();
+    if (pipes.size() > passedPipes &&
+    pipes[passedPipes].getRightBound() < bird.getY()) {
+        fitness += 5;
+        passedPipes++;
+    }
 }
 
 void Game::checkCollisions(){
@@ -168,4 +190,25 @@ void Game::restartGame(){
 
     state.reset(bird);
     pipes.clear();
+
+    passedPipes = 0;
+
+    if (fitness > bestFitness) {
+        bestFitness = fitness;
+        brain.save("best_weights.txt");
+    } else {
+        brain.load("best_weights.txt");
+        brain.mutate(0.1f, 0.5f); // rate, strength
+    }
+    
+    fitness = 0;
+}
+
+bool Game::fileExists(const std::string& filename) {
+    std::ifstream file(filename);
+    return file.good();
+}
+
+bool Game::isStateValid() {
+    return pipes.size() > 0 && state.next_pipe_distance_x > 0;
 }

@@ -6,14 +6,21 @@
 #include "Globals.h"
 #include "Pipe.h"
 #include "BirdState.h"
+#include "NeuralNetwork.h"
 
 class Game{
 public:
     Game(sf::RenderWindow&);
     sf::RenderWindow& win;
+    bool fileExists(const std::string&);
     void startGameLoop(bool &);
 
 private:
+    NeuralNetwork brain;
+    float fitness = 0;
+    float bestFitness = 0;
+    int passedPipes = 0;
+
     sf::Texture bg_texture, ground_texture;
     sf::Sprite bg_sprite,ground_sprite1,ground_sprite2;
     const int move_speed = 270;
@@ -31,4 +38,5 @@ private:
     sf::Font font;
     sf::Text restart_text;
     void restartGame();
+    bool isStateValid();
 };

@@ -1,5 +1,10 @@
 #include "BirdState.h"
 #include <iostream>
+#include <cmath>
+
+inline float round2(float x) {
+  return std::round(x * 100.0f) / 100.0f;
+}
 
 BirdState::BirdState()
 :
@@ -19,13 +24,13 @@ void BirdState::printState(){
 }
 
 void BirdState::normalizePoints(){
-  this->printState();
-  this->next_pipe_distance_x = this->next_pipe_distance_x/700.0f;
-  this->next_pipe_distance_upy = this->next_pipe_distance_upy/500.0f;
-  this->next_pipe_distance_downy = this->next_pipe_distance_downy/500.0f;
-  this->bird_y = this->bird_y/600.0f;
-  this->bird_velocity = (this->bird_velocity+10.0f)/20.0f;
-  this->printState();
+  // this->printState();
+  this->next_pipe_distance_x = round2(this->next_pipe_distance_x/700.0f);
+  this->next_pipe_distance_upy = round2(this->next_pipe_distance_upy/500.0f);
+  this->next_pipe_distance_downy = round2(this->next_pipe_distance_downy/500.0f);
+  this->bird_y = round2(this->bird_y/600.0f);
+  this->bird_velocity = round2((this->bird_velocity+10.0f)/20.0f);
+  // this->printState();
 }
 
 void BirdState::reset(Bird& bird){
