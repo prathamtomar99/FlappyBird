@@ -58,8 +58,3 @@ void Bird::setShouldFly(bool should_fly)
 {
 	this->should_fly = should_fly;
 }
-
-float Bird::getVelocityY()
-{
-	return velocity_y;
-}

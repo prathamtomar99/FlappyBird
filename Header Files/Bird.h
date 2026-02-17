@@ -17,6 +17,5 @@ public:
 	void resetBirdPosition();
 	void update(sf::Time&);
 	float getRightBound();
-	float getVelocityY(); // Added getter
 
 };

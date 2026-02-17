@@ -1,18 +1,15 @@
 #pragma once
 #include<SFML/Graphics.hpp>
-#include<SFML/Network.hpp>  // Added for networking
 #include"Bird.h"
 #include<vector>
 #include"Pipe.h"
 #include<random>
-
 class Game
 {
 public:
 	Game(sf::RenderWindow&);
 	sf::RenderWindow& win;
 	void startGameLoop();
-
 private:
 	sf::Texture bg_texture,ground_texture;
 	sf::Sprite bg_sprite,ground_sprite1,ground_sprite2;
@@ -33,10 +30,4 @@ private:
 	sf::Font font;
 	sf::Text restart_text, score_text;
 
-	// --- AI / Networking ---
-	bool ai_mode = true;       // Set to true to enable AI mode
-	sf::TcpListener listener;
-	sf::TcpSocket client;
-	void sendGameState();
-	int receiveAction();
 };

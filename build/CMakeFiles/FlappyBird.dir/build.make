@@ -145,7 +145,6 @@ FlappyBird: CMakeFiles/FlappyBird.dir/src/Pipe.cpp.o
 FlappyBird: CMakeFiles/FlappyBird.dir/build.make
 FlappyBird: /opt/homebrew/opt/sfml@2/lib/libsfml-graphics.2.6.2.dylib
 FlappyBird: /opt/homebrew/opt/sfml@2/lib/libsfml-window.2.6.2.dylib
-FlappyBird: /opt/homebrew/opt/sfml@2/lib/libsfml-network.2.6.2.dylib
 FlappyBird: /opt/homebrew/opt/sfml@2/lib/libsfml-system.2.6.2.dylib
 FlappyBird: CMakeFiles/FlappyBird.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/prathamtomar/Desktop/Pratham/Projects/FlappyBird/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable FlappyBird"

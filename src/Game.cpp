@@ -40,11 +40,6 @@ score(0)
 
 	Pipe::loadTextures();
 
-	// Networking setup
-	if (ai_mode) {
-		listener.listen(54000);
-		client.setBlocking(true); // Synchronous mode for lock-step
-	}
 }
 
 void Game::doProcessing(sf::Time& dt)
@@ -77,171 +72,47 @@ void Game::doProcessing(sf::Time& dt)
 void Game::startGameLoop()
 {
 	sf::Clock clock;
-
+	//Game Loop
 	while (win.isOpen())
-	{
-		// 1. Connection Phase (AI Mode)
-		if (ai_mode) {
-			restart_text.setString("Waiting for AI...");
-			// Center text
-			restart_text.setPosition(
-				WIN_WIDTH/2 - restart_text.getGlobalBounds().width/2, 
-				WIN_HEIGHT/2 - restart_text.getGlobalBounds().height/2
-			);
-			
-			bool connected = false;
-			while (win.isOpen() && !connected) {
-				sf::Event event;
-				while (win.pollEvent(event)) {
-					if (event.type == sf::Event::Closed) win.close();
-				}
-				
-				win.clear();
-				win.draw(restart_text);
-				win.display();
-
-				if (listener.accept(client) == sf::Socket::Done) {
-					connected = true;
-					client.setBlocking(true); // Back to blocking for game sync
-				}
-				else {
-					// Check if listener is actually listening?
-					// If listen() failed in constructor, accept() returns Error immediately.
-					// We should probably check that, but for now just sleep.
-					sf::sleep(sf::milliseconds(100));
-				}
-			}
-			if (!win.isOpen()) break;
-
-			// Reset game for new connection
-			restartGame();
-			restart_text.setString("Restart Game!!");
-			restart_text.setPosition(150, 650);
-			is_enter_pressed = true; 
-			bird.setShouldFly(true);
-		}
-
-		// 2. Game Loop Phase
-		bool connection_lost = false;
-		
-		while (win.isOpen() && !connection_lost)
-		{	
-			sf::Time dt = clock.restart();
-
-			// In AI mode, we ignore real time and use a fixed step to match the training environment stability
-			if (ai_mode) {
-				dt = sf::seconds(1.f/60.f); 
-			}
-			
-			// AI Step
-			if (ai_mode && run_game && is_enter_pressed) {
-				// Send State
-				sf::Packet packet;
-				float birdY = bird.bird_sprite.getPosition().y;
-				float velY = bird.getVelocityY();
-				float pipeX = -1.0f;
-				float pipeY = -1.0f;
-				if (!pipes.empty()) {
-					for (auto& p : pipes) {
-						if (p.getRightBound() > bird.bird_sprite.getGlobalBounds().left) {
-							pipeX = p.sprite_down.getPosition().x;
-							pipeY = p.sprite_up.getPosition().y;
-							break;
-						}
-					}
-				}
-				packet << birdY << velY << pipeX << pipeY << (sf::Int32)(run_game ? 1 : 0) << (sf::Int32)score;
-				
-				if (client.send(packet) != sf::Socket::Done) {
-					connection_lost = true;
-					break;
-				}
-
-				// Receive Action
-				sf::Packet actionPacket;
-				// sf::Packet handles partial receives internally if using blocking sockets, 
-				// but here we are in blocking mode so it should wait for the full packet.
-				// However, let's add a check.
-				if (client.receive(actionPacket) != sf::Socket::Done) {
-					connection_lost = true;
-					break;
-				}
-				sf::Int32 action;
-				if (actionPacket >> action) {
-					if (action == 1) {
-						bird.flapBird(dt);
-					}
-				} else {
-					// Packet received but invalid size?
-					connection_lost = true;
-					break;
-				}
-			}
-
-			sf::Event event;
-			//Event Loop
-			while (win.pollEvent(event))
+	{	
+		sf::Time dt = clock.restart();
+		sf::Event event;
+		//Event Loop
+		while (win.pollEvent(event))
+		{
+			if (event.type == sf::Event::Closed)
 			{
-				if (event.type == sf::Event::Closed)
+				win.close();
+			}
+			if (event.type == sf::Event::KeyPressed && run_game)
+			{
+				if (event.key.code == sf::Keyboard::Enter && !is_enter_pressed)
 				{
-					win.close();
+					is_enter_pressed = true;
+					bird.setShouldFly(true);
 				}
-				if (!ai_mode) { 
-					if (event.type == sf::Event::KeyPressed && run_game)
-					{
-						if (event.key.code == sf::Keyboard::Enter && !is_enter_pressed)
-						{
-							is_enter_pressed = true;
-							bird.setShouldFly(true);
-						}
-						if (event.key.code == sf::Keyboard::Space && is_enter_pressed)
-						{
-							bird.flapBird(dt);
-						}
-					}
-					if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && !run_game)
-					{
-						if (restart_text.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
-						{
-							restartGame();
-						}
-					}
+				if (event.key.code == sf::Keyboard::Space && is_enter_pressed)
+				{
+					bird.flapBird(dt);
 				}
 			}
-			
-			// For AI, auto-restart if game over
-			if (ai_mode && !run_game) {
-				// Send death state
-				sf::Packet packet;
-				float birdY = bird.bird_sprite.getPosition().y;
-				float velY = bird.getVelocityY();
-				packet << birdY << velY << -1.f << -1.f << (sf::Int32)0 << (sf::Int32)score;
-				if (client.send(packet) != sf::Socket::Done) {
-					connection_lost = true;
-					break;
-				}
-
-				// Wait for ack
-				sf::Packet ackPacket;
-				if (client.receive(ackPacket) != sf::Socket::Done) {
-					connection_lost = true;
-					break;
+			if (event.type == sf::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && !run_game)
+			{
+				
+				if (restart_text.getGlobalBounds().contains(event.mouseButton.x, event.mouseButton.y))
+				{
+					restartGame();
 				}
 				
-				restartGame();
-				is_enter_pressed = true;
-				bird.setShouldFly(true);
 			}
+		}
 
-			doProcessing(dt);
-			draw();
-			win.display();
-		}
+		doProcessing(dt);
 		
-		if (connection_lost) {
-			client.disconnect();
-			// Loop back to Connection Phase
-		}
+
+		draw();
+		//display the win
+		win.display();
 	}
 }
 
@@ -252,7 +123,7 @@ void Game::checkCollisions()
 		if (pipes[0].sprite_down.getGlobalBounds().intersects(bird.bird_sprite.getGlobalBounds()) ||
 			pipes[0].sprite_up.getGlobalBounds().intersects(bird.bird_sprite.getGlobalBounds()) ||
 			bird.bird_sprite.getGlobalBounds().top >= 540)
-	    {
+		{
 			is_enter_pressed = false;
 			run_game = false;
 		}
@@ -334,5 +205,3 @@ std::string Game::toString(int num)
 	ss << num;
 	return ss.str();
 }
-
-// Methods removed as they are now inlined in startGameLoop for better control context

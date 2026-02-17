@@ -870,19 +870,6 @@ CMakeFiles/FlappyBird.dir/src/main.cpp.o: \
   /opt/homebrew/opt/sfml@2/include/SFML/Graphics/VertexBuffer.hpp \
   /Users/prathamtomar/Desktop/Pratham/Projects/FlappyBird/Header\ Files/Globals.h \
   /Users/prathamtomar/Desktop/Pratham/Projects/FlappyBird/Header\ Files/Game.h \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Ftp.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Export.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/TcpSocket.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Socket.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/SocketHandle.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Http.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/IpAddress.hpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/istream \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Packet.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/SocketSelector.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/TcpListener.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/UdpSocket.hpp \
   /Users/prathamtomar/Desktop/Pratham/Projects/FlappyBird/Header\ Files/Bird.h \
   /Users/prathamtomar/Desktop/Pratham/Projects/FlappyBird/Header\ Files/Pipe.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/random \

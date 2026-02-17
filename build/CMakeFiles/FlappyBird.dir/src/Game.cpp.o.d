@@ -869,19 +869,6 @@ CMakeFiles/FlappyBird.dir/src/Game.cpp.o: \
   /opt/homebrew/opt/sfml@2/include/SFML/Graphics/Sprite.hpp \
   /opt/homebrew/opt/sfml@2/include/SFML/Graphics/Text.hpp \
   /opt/homebrew/opt/sfml@2/include/SFML/Graphics/VertexBuffer.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Ftp.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Export.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/TcpSocket.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Socket.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/SocketHandle.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Http.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/IpAddress.hpp \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/istream \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/Packet.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/SocketSelector.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/TcpListener.hpp \
-  /opt/homebrew/opt/sfml@2/include/SFML/Network/UdpSocket.hpp \
   /Users/prathamtomar/Desktop/Pratham/Projects/FlappyBird/Header\ Files/Bird.h \
   /Users/prathamtomar/Desktop/Pratham/Projects/FlappyBird/Header\ Files/Pipe.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/random \
@@ -935,4 +922,5 @@ CMakeFiles/FlappyBird.dir/src/Game.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/uniform_random_bit_generator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/__random/weibull_distribution.h \
   /Users/prathamtomar/Desktop/Pratham/Projects/FlappyBird/Header\ Files/Globals.h \
-  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/sstream \
+  /Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include/c++/v1/istream
