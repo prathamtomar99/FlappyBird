@@ -9,14 +9,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_PREFIX_PATH "/opt/homebrew/opt/sfml@2")
 
 # 2. Find SFML components (Note: Use lowercase for components in 2.x)
-find_package(SFML 2.6.2 COMPONENTS graphics window system REQUIRED)
+find_package(SFML 2.6.2 COMPONENTS graphics window system network REQUIRED)
 
 add_executable(FlappyBird 
     src/main.cpp 
     src/Game.cpp
     src/Bird.cpp
     src/Pipe.cpp
-    src/BirdState.cpp
 )
 
 # 3. Include your custom headers
@@ -36,4 +35,5 @@ target_link_libraries(FlappyBird
     sfml-graphics
     sfml-window
     sfml-system
+    sfml-network
 )
